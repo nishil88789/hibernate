@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 19, 2022 2:40:50 PM by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+	<class name="in.co.rays.Payment" table="PAYMENT">
+		<id name="id" type="int">
+			<column name="PAY_ID" />
+			<generator class="assigned" />
+		</id>
+		<discriminator column="PAYMENT_TYPE" type="string"></discriminator>
+		<property name="amount" type="int">
+			<column name="AMOUNT" />
+		</property>
+		<!-- <joined-subclass name="in.co.rays.inher.Creditcard" table="Creditcard"> 
+			<key column="PAY_ID"></key> <property name="ccType" column="CC_TYPE"></property> 
+			</joined-subclass> <joined-subclass name="in.co.rays.inher.Cheque" table="Cheque"> 
+			<key column="PAY_ID"></key> <property name="chequeNo" column="CHEQUE_NO"></property> 
+			</joined-subclass> -->
+		<subclass name="in.co.rays.CreditCard"
+			discriminator-value="CreditCard">
+			<join table="ccType">
+				<key column="PAYMENT_ID"></key>
+				<property name="ccType" column="ccType"></property>
+			</join>
+		</subclass>
+		<subclass name="in.co.rays.Cheque"
+			discriminator-value="Cheque">
+			<join table="cheqNo">
+				<key column="PAYMENT_ID"></key>
+				<property name="cheqNo" column="cheqNo"></property>
+			</join>
+		</subclass>
+	</class>
+</hibernate-mapping>
